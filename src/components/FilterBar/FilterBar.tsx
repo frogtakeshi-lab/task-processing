@@ -53,15 +53,6 @@ export function FilterBar({ filters, availableCategories, taskCounts, onChange }
         <label className="filter-bar__checkbox-label">
           <input
             type="checkbox"
-            checked={filters.routineOnly}
-            onChange={e => onChange({ ...filters, routineOnly: e.target.checked })}
-          />
-          ルーティンのみ
-        </label>
-
-        <label className="filter-bar__checkbox-label">
-          <input
-            type="checkbox"
             checked={filters.showCompleted}
             onChange={e => onChange({ ...filters, showCompleted: e.target.checked })}
           />

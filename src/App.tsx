@@ -25,7 +25,7 @@ export default function App() {
   }, [activeCount])
 
   function handleFAB() {
-    setModalDefaults(screen === 'routines' ? { recurrence: 'daily' } : {})
+    setModalDefaults({})
     setModalOpen(true)
   }
 
@@ -57,6 +57,7 @@ export default function App() {
 
       {modalOpen && (
         <AddTaskModal
+          mode={screen === 'routines' ? 'routine' : 'task'}
           defaults={modalDefaults}
           existingCategories={availableCategories}
           onAdd={draft => { addTask(draft); setModalOpen(false) }}
