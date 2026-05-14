@@ -15,7 +15,7 @@ export function TaskList({ tasks, existingCategories, onToggle, onDelete, onEdit
     return (
       <div className="task-list__empty">
         <p>タスクがありません</p>
-        <p className="task-list__empty-hint">上のフォームからタスクを追加しましょう</p>
+        <p className="task-list__empty-hint">右下の + ボタンから追加できます</p>
       </div>
     )
   }

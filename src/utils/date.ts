@@ -58,3 +58,21 @@ export function calcNextDueDate(currentDue: string | null, recurrence: Recurrenc
 export function todayISO(): string {
   return todayString()
 }
+
+export function isTodayTask(dueDate: string | null): boolean {
+  if (!dueDate) return false
+  return dueDate <= todayString()
+}
+
+export function getGreeting(): string {
+  const h = new Date().getHours()
+  if (h < 12) return 'おはようございます'
+  if (h < 18) return 'こんにちは'
+  return 'こんばんは'
+}
+
+export function formatTodayHeader(): string {
+  const d = new Date()
+  const days = ['日', '月', '火', '水', '木', '金', '土']
+  return `${d.getMonth() + 1}月${d.getDate()}日（${days[d.getDay()]}）`
+}

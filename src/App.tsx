@@ -1,46 +1,33 @@
 import { useState, useEffect } from 'react'
 import { useTasks } from './hooks/useTasks'
-import { TaskForm } from './components/TaskForm/TaskForm'
-import { FilterBar } from './components/FilterBar/FilterBar'
-import { TaskList } from './components/TaskList/TaskList'
-import type { FilterState, Task } from './types'
-import { isOverdue } from './utils/date'
-
-const DEFAULT_FILTERS: FilterState = {
-  priority: 'all',
-  category: 'all',
-  showCompleted: true,
-  routineOnly: false,
-}
+import { BottomNav } from './components/BottomNav/BottomNav'
+import { FAB } from './components/FAB/FAB'
+import { AddTaskModal, type ModalDefaults } from './components/AddTaskModal/AddTaskModal'
+import { HomeScreen } from './screens/HomeScreen/HomeScreen'
+import { TasksScreen } from './screens/TasksScreen/TasksScreen'
+import { RoutinesScreen } from './screens/RoutinesScreen/RoutinesScreen'
+import type { Screen, Task } from './types'
 
 export default function App() {
   const { tasks, addTask, deleteTask, toggleTask, editTask } = useTasks()
-  const [filters, setFilters] = useState<FilterState>(DEFAULT_FILTERS)
+  const [screen, setScreen] = useState<Screen>('home')
+  const [modalOpen, setModalOpen] = useState(false)
+  const [modalDefaults, setModalDefaults] = useState<ModalDefaults>({})
 
   const availableCategories = Array.from(
     new Set(tasks.flatMap(t => t.categories))
   ).sort()
 
-  const filteredTasks = tasks
-    .filter(t => filters.showCompleted || !t.completed)
-    .filter(t => filters.priority === 'all' || t.priority === filters.priority)
-    .filter(t => filters.category === 'all' || t.categories.includes(filters.category))
-    .filter(t => !filters.routineOnly || t.recurrence !== 'none')
-    .sort((a, b) => {
-      if (a.completed !== b.completed) return a.completed ? 1 : -1
-      if (a.dueDate && b.dueDate) return a.dueDate.localeCompare(b.dueDate)
-      if (a.dueDate) return -1
-      if (b.dueDate) return 1
-      return a.createdAt.localeCompare(b.createdAt)
-    })
-
   const activeCount = tasks.filter(t => !t.completed).length
-  const completedCount = tasks.filter(t => t.completed).length
-  const overdueCount = tasks.filter(t => !t.completed && t.dueDate != null && isOverdue(t.dueDate)).length
 
   useEffect(() => {
     document.title = activeCount > 0 ? `(${activeCount}) Daily Tasks` : 'Daily Tasks'
   }, [activeCount])
+
+  function handleFAB() {
+    setModalDefaults(screen === 'routines' ? { recurrence: 'daily' } : {})
+    setModalOpen(true)
+  }
 
   function handleEdit(
     id: string,
@@ -49,29 +36,33 @@ export default function App() {
     editTask(id, patch)
   }
 
+  const screenProps = {
+    tasks,
+    existingCategories: availableCategories,
+    onToggle: toggleTask,
+    onDelete: deleteTask,
+    onEdit: handleEdit,
+  }
+
   return (
     <div className="app">
-      <header className="app-header">
-        <h1 className="app-header__title">Daily Tasks</h1>
-        <p className="app-header__subtitle">シンプルな日常タスク管理</p>
-      </header>
-
-      <main className="app-main">
-        <TaskForm existingCategories={availableCategories} onAdd={addTask} />
-        <FilterBar
-          filters={filters}
-          availableCategories={availableCategories}
-          taskCounts={{ total: activeCount, completed: completedCount, overdue: overdueCount }}
-          onChange={setFilters}
-        />
-        <TaskList
-          tasks={filteredTasks}
-          existingCategories={availableCategories}
-          onToggle={toggleTask}
-          onDelete={deleteTask}
-          onEdit={handleEdit}
-        />
+      <main className="screen-content">
+        {screen === 'home' && <HomeScreen {...screenProps} />}
+        {screen === 'tasks' && <TasksScreen {...screenProps} />}
+        {screen === 'routines' && <RoutinesScreen {...screenProps} />}
       </main>
+
+      <FAB onClick={handleFAB} />
+      <BottomNav current={screen} onChange={setScreen} />
+
+      {modalOpen && (
+        <AddTaskModal
+          defaults={modalDefaults}
+          existingCategories={availableCategories}
+          onAdd={draft => { addTask(draft); setModalOpen(false) }}
+          onClose={() => setModalOpen(false)}
+        />
+      )}
     </div>
   )
 }
