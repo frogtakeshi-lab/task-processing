@@ -1,0 +1,14 @@
+.tasks-screen {
+  display: flex;
+  flex-direction: column;
+  padding-top: 16px;
+  gap: 14px;
+}
+
+.tasks-screen__filter {
+  padding: 0 16px;
+}
+
+.tasks-screen__list {
+  padding: 0 16px;
+}

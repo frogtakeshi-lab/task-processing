@@ -24,3 +24,5 @@ export interface FilterState {
   showCompleted: boolean;
   routineOnly: boolean;
 }
+
+export type Screen = 'home' | 'tasks' | 'routines';
