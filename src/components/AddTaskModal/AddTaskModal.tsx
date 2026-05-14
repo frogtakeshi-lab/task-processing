@@ -10,6 +10,7 @@ export interface ModalDefaults {
 }
 
 interface AddTaskModalProps {
+  mode?: 'task' | 'routine'
   defaults?: ModalDefaults
   existingCategories: string[]
   onAdd: (draft: TaskDraft) => void
@@ -17,14 +18,14 @@ interface AddTaskModalProps {
 }
 
 const PRIORITY_LABELS: Record<Priority, string> = { high: '高', medium: '中', low: '低' }
-const RECURRENCE_LABELS: Record<Recurrence, string> = { none: 'なし', daily: '毎日', weekly: '毎週', monthly: '毎月' }
+const RECURRENCE_OPTIONS_ROUTINE: [Recurrence, string][] = [['daily', '毎日'], ['weekly', '毎週'], ['monthly', '毎月']]
 
-export function AddTaskModal({ defaults = {}, existingCategories, onAdd, onClose }: AddTaskModalProps) {
+export function AddTaskModal({ mode = 'task', defaults = {}, existingCategories, onAdd, onClose }: AddTaskModalProps) {
   const [title, setTitle] = useState('')
   const [priority, setPriority] = useState<Priority>('medium')
   const [categoryInput, setCategoryInput] = useState('')
   const [dueDate, setDueDate] = useState('')
-  const [recurrence, setRecurrence] = useState<Recurrence>(defaults.recurrence ?? 'none')
+  const [recurrence, setRecurrence] = useState<Recurrence>(defaults.recurrence ?? (mode === 'routine' ? 'daily' : 'none'))
   const titleRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -49,7 +50,7 @@ export function AddTaskModal({ defaults = {}, existingCategories, onAdd, onClose
         aria-label="タスクを追加"
       >
         <div className="modal-sheet__handle" aria-hidden="true" />
-        <h2 className="modal-sheet__heading">タスクを追加</h2>
+        <h2 className="modal-sheet__heading">{mode === 'routine' ? 'ルーティンを追加' : 'タスクを追加'}</h2>
         <form onSubmit={handleSubmit}>
           <input
             ref={titleRef}
@@ -73,18 +74,20 @@ export function AddTaskModal({ defaults = {}, existingCategories, onAdd, onClose
                 ))}
               </select>
             </label>
-            <label className="modal-sheet__field">
-              <span className="modal-sheet__label">繰り返し</span>
-              <select
-                className="modal-sheet__select"
-                value={recurrence}
-                onChange={e => setRecurrence(e.target.value as Recurrence)}
-              >
-                {(Object.entries(RECURRENCE_LABELS) as [Recurrence, string][]).map(([v, l]) => (
-                  <option key={v} value={v}>{l}</option>
-                ))}
-              </select>
-            </label>
+            {mode === 'routine' && (
+              <label className="modal-sheet__field">
+                <span className="modal-sheet__label">繰り返し</span>
+                <select
+                  className="modal-sheet__select"
+                  value={recurrence}
+                  onChange={e => setRecurrence(e.target.value as Recurrence)}
+                >
+                  {RECURRENCE_OPTIONS_ROUTINE.map(([v, l]) => (
+                    <option key={v} value={v}>{l}</option>
+                  ))}
+                </select>
+              </label>
+            )}
             <label className="modal-sheet__field">
               <span className="modal-sheet__label">期限</span>
               <input
