@@ -1,4 +1,4 @@
-import type { Task } from '../../types'
+import type { Task, TaskPatch } from '../../types'
 import { TaskList } from '../../components/TaskList/TaskList'
 import { getGreeting, formatTodayHeader, isTodayTask, isOverdue } from '../../utils/date'
 import './HomeScreen.css'
@@ -8,7 +8,7 @@ interface HomeScreenProps {
   existingCategories: string[]
   onToggle: (id: string) => void
   onDelete: (id: string) => void
-  onEdit: (id: string, patch: Partial<Pick<Task, 'title' | 'priority' | 'categories' | 'dueDate' | 'recurrence'>>) => void
+  onEdit: (id: string, patch: TaskPatch) => void
 }
 
 export function HomeScreen({ tasks, existingCategories, onToggle, onDelete, onEdit }: HomeScreenProps) {
@@ -65,6 +65,7 @@ export function HomeScreen({ tasks, existingCategories, onToggle, onDelete, onEd
           <TaskList
             tasks={todayTasks}
             existingCategories={existingCategories}
+            readOnly
             onToggle={onToggle}
             onDelete={onDelete}
             onEdit={onEdit}
@@ -80,6 +81,7 @@ export function HomeScreen({ tasks, existingCategories, onToggle, onDelete, onEd
           <TaskList
             tasks={routines}
             existingCategories={existingCategories}
+            readOnly
             onToggle={onToggle}
             onDelete={onDelete}
             onEdit={onEdit}

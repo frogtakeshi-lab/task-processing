@@ -6,7 +6,7 @@ import { AddTaskModal, type ModalDefaults } from './components/AddTaskModal/AddT
 import { HomeScreen } from './screens/HomeScreen/HomeScreen'
 import { TasksScreen } from './screens/TasksScreen/TasksScreen'
 import { RoutinesScreen } from './screens/RoutinesScreen/RoutinesScreen'
-import type { Screen, Task } from './types'
+import type { Screen, TaskPatch } from './types'
 
 export default function App() {
   const { tasks, addTask, deleteTask, toggleTask, editTask } = useTasks()
@@ -29,10 +29,7 @@ export default function App() {
     setModalOpen(true)
   }
 
-  function handleEdit(
-    id: string,
-    patch: Partial<Pick<Task, 'title' | 'priority' | 'categories' | 'dueDate' | 'recurrence'>>
-  ) {
+  function handleEdit(id: string, patch: TaskPatch) {
     editTask(id, patch)
   }
 

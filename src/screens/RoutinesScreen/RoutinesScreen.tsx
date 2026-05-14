@@ -1,4 +1,4 @@
-import type { Task, Recurrence } from '../../types'
+import type { Task, Recurrence, TaskPatch } from '../../types'
 import { TaskItem } from '../../components/TaskItem/TaskItem'
 import './RoutinesScreen.css'
 
@@ -13,7 +13,7 @@ interface RoutinesScreenProps {
   existingCategories: string[]
   onToggle: (id: string) => void
   onDelete: (id: string) => void
-  onEdit: (id: string, patch: Partial<Pick<Task, 'title' | 'priority' | 'categories' | 'dueDate' | 'recurrence'>>) => void
+  onEdit: (id: string, patch: TaskPatch) => void
 }
 
 export function RoutinesScreen({ tasks, existingCategories, onToggle, onDelete, onEdit }: RoutinesScreenProps) {

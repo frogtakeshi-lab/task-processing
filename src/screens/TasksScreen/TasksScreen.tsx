@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import type { Task, FilterState } from '../../types'
+import type { Task, FilterState, TaskPatch } from '../../types'
 import { FilterBar } from '../../components/FilterBar/FilterBar'
 import { TaskList } from '../../components/TaskList/TaskList'
 import { isOverdue } from '../../utils/date'
@@ -17,7 +17,7 @@ interface TasksScreenProps {
   existingCategories: string[]
   onToggle: (id: string) => void
   onDelete: (id: string) => void
-  onEdit: (id: string, patch: Partial<Pick<Task, 'title' | 'priority' | 'categories' | 'dueDate' | 'recurrence'>>) => void
+  onEdit: (id: string, patch: TaskPatch) => void
 }
 
 export function TasksScreen({ tasks, existingCategories, onToggle, onDelete, onEdit }: TasksScreenProps) {

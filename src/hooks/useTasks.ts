@@ -1,10 +1,9 @@
 import { useState } from 'react'
-import type { Task, Priority, Recurrence } from '../types'
+import type { Task, TaskPatch } from '../types'
 import { loadTasks, saveTasks } from '../utils/storage'
 import { calcNextDueDate } from '../utils/date'
 
 type TaskDraft = Omit<Task, 'id' | 'createdAt' | 'completed'>
-type TaskPatch = Partial<Pick<Task, 'title' | 'priority' | 'categories' | 'dueDate' | 'recurrence'>>
 
 export function useTasks() {
   const [tasks, setTasks] = useState<Task[]>(() => loadTasks())
@@ -61,4 +60,4 @@ export function useTasks() {
   return { tasks, addTask, deleteTask, toggleTask, editTask }
 }
 
-export type { TaskDraft, TaskPatch, Priority, Recurrence }
+export type { TaskDraft }

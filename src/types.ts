@@ -1,6 +1,11 @@
 export type Priority = 'high' | 'medium' | 'low';
-
 export type Recurrence = 'none' | 'daily' | 'weekly' | 'monthly';
+
+export interface Subtask {
+  id: string;
+  title: string;
+  completed: boolean;
+}
 
 export interface Task {
   id: string;
@@ -11,6 +16,8 @@ export interface Task {
   dueDate: string | null;
   recurrence: Recurrence;
   createdAt: string;
+  notes: string;
+  subtasks: Subtask[];
 }
 
 export interface StorageSchema {
@@ -26,3 +33,7 @@ export interface FilterState {
 }
 
 export type Screen = 'home' | 'tasks' | 'routines';
+
+export type TaskPatch = Partial<Pick<Task,
+  'title' | 'priority' | 'categories' | 'dueDate' | 'recurrence' | 'notes' | 'subtasks'
+>>;
