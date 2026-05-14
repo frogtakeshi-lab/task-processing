@@ -1,0 +1,34 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.badge--priority-high {
+  background: #fdecea;
+  color: #c62828;
+}
+
+.badge--priority-medium {
+  background: #fff3e0;
+  color: #e65100;
+}
+
+.badge--priority-low {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.badge--category {
+  background: #e8eaf6;
+  color: #3949ab;
+}
+
+.badge--recurrence {
+  background: #f3e5f5;
+  color: #7b1fa2;
+}

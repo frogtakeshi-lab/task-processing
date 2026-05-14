@@ -1,0 +1,29 @@
+.task-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.task-list__empty {
+  text-align: center;
+  padding: 48px 24px;
+  color: #9e9e9e;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.task-list__empty p {
+  margin: 0;
+  font-size: 15px;
+}
+
+.task-list__empty-hint {
+  margin-top: 6px !important;
+  font-size: 13px !important;
+  color: #bdbdbd !important;
+}
