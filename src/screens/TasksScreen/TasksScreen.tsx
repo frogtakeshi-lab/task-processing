@@ -23,11 +23,12 @@ interface TasksScreenProps {
 export function TasksScreen({ tasks, existingCategories, onToggle, onDelete, onEdit }: TasksScreenProps) {
   const [filters, setFilters] = useState<FilterState>(DEFAULT_FILTERS)
 
-  const filteredTasks = tasks
+  const nonRoutineTasks = tasks.filter(t => t.recurrence === 'none')
+
+  const filteredTasks = nonRoutineTasks
     .filter(t => filters.showCompleted || !t.completed)
     .filter(t => filters.priority === 'all' || t.priority === filters.priority)
     .filter(t => filters.category === 'all' || t.categories.includes(filters.category))
-    .filter(t => !filters.routineOnly || t.recurrence !== 'none')
     .sort((a, b) => {
       if (a.completed !== b.completed) return a.completed ? 1 : -1
       if (a.dueDate && b.dueDate) return a.dueDate.localeCompare(b.dueDate)
@@ -36,9 +37,9 @@ export function TasksScreen({ tasks, existingCategories, onToggle, onDelete, onE
       return a.createdAt.localeCompare(b.createdAt)
     })
 
-  const activeCount = tasks.filter(t => !t.completed).length
-  const completedCount = tasks.filter(t => t.completed).length
-  const overdueCount = tasks.filter(t => !t.completed && t.dueDate != null && isOverdue(t.dueDate)).length
+  const activeCount = nonRoutineTasks.filter(t => !t.completed).length
+  const completedCount = nonRoutineTasks.filter(t => t.completed).length
+  const overdueCount = nonRoutineTasks.filter(t => !t.completed && t.dueDate != null && isOverdue(t.dueDate)).length
 
   return (
     <div className="tasks-screen">
