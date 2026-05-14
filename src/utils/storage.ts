@@ -8,7 +8,12 @@ export function loadTasks(): Task[] {
     if (!raw) return []
     const data = JSON.parse(raw) as StorageSchema
     if (data.version !== 1 || !Array.isArray(data.tasks)) return []
-    return data.tasks
+    // Migrate existing tasks that may be missing notes/subtasks fields
+    return data.tasks.map(t => ({
+      ...t,
+      notes: (t as Task & { notes?: string }).notes ?? '',
+      subtasks: (t as Task & { subtasks?: typeof t.subtasks }).subtasks ?? [],
+    }))
   } catch {
     return []
   }
