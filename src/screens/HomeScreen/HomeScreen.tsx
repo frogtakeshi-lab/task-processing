@@ -13,7 +13,7 @@ interface HomeScreenProps {
 
 export function HomeScreen({ tasks, existingCategories, onToggle, onDelete, onEdit }: HomeScreenProps) {
   const todayTasks = tasks
-    .filter(t => !t.completed && isTodayTask(t.dueDate))
+    .filter(t => !t.completed && t.recurrence === 'none' && isTodayTask(t.dueDate))
     .sort((a, b) => {
       if (a.dueDate && b.dueDate) return a.dueDate.localeCompare(b.dueDate)
       if (a.dueDate) return -1
