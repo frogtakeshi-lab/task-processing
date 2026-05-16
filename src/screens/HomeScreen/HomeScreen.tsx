@@ -65,7 +65,6 @@ export function HomeScreen({ tasks, existingCategories, onToggle, onDelete, onEd
           <TaskList
             tasks={todayTasks}
             existingCategories={existingCategories}
-            readOnly
             onToggle={onToggle}
             onDelete={onDelete}
             onEdit={onEdit}
@@ -81,7 +80,6 @@ export function HomeScreen({ tasks, existingCategories, onToggle, onDelete, onEd
           <TaskList
             tasks={routines}
             existingCategories={existingCategories}
-            readOnly
             onToggle={onToggle}
             onDelete={onDelete}
             onEdit={onEdit}
