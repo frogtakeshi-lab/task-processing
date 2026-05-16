@@ -60,7 +60,7 @@ export function todayISO(): string {
 }
 
 export function isTodayTask(dueDate: string | null): boolean {
-  if (!dueDate) return false
+  if (!dueDate) return true
   return dueDate <= todayString()
 }
 
